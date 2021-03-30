@@ -58,8 +58,8 @@ public class Collector extends SubsystemBase {
     public void deployCollector() {
 
         // Set Piston to extend/retract
-        Constants.intakeSolenoid.set(false);
-        Constants.intakeSolenoid2.set(true);
+        // Constants.intakeSolenoid.set(false);
+        // Constants.intakeSolenoid2.set(true);
 
         isDeployed = true;
 
@@ -68,8 +68,8 @@ public class Collector extends SubsystemBase {
 
     public void retractCollector() {
 
-        Constants.intakeSolenoid.set(true);
-        Constants.intakeSolenoid2.set(false);
+        // Constants.intakeSolenoid.set(true);
+        // Constants.intakeSolenoid2.set(false);
 
         isDeployed = false;
 

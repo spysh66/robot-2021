@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -14,15 +7,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Limelight.LimelightInterface;
+import frc.robot.Limelight.LimelightInterface.LimelightLEDMode;
 import frc.robot.Mapping.RobotContainer;
 import frc.robot.Mapping.SpeedControllerSetUp;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
+ * TODO: Reenable collector pneumatics and compressor
+ * 
+ * 
  */
 public class Robot extends TimedRobot {
 
@@ -33,6 +26,7 @@ public class Robot extends TimedRobot {
   // Defining Subsystems
 
   public static SpeedControllerSetUp speedcontrollersetup;
+  //public static LimelightInterface limelight = new LimelightInterface();
 
   public static AHRS m_gyro;
   private RobotContainer m_robotContainer;
@@ -55,8 +49,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     // Sets up the camera
-    CameraServer.getInstance().startAutomaticCapture();
+   // CameraServer.getInstance().startAutomaticCapture();
     // For limelight, use 10.31.0.1:5801
+  //  limelight.setLEDMode(LimelightLEDMode.OFF);
 
     // Gets what type of game is being played, not that important
     gameData = DriverStation.getInstance().getGameSpecificMessage();

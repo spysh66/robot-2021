@@ -73,8 +73,8 @@ public final class Constants {
   public static final WPI_TalonSRX teleoscope = new WPI_TalonSRX(TeleoscopeChannel);
 
   // === SOLENOID === //
-  public static final Solenoid intakeSolenoid = new Solenoid(41, 1);
-  public static final Solenoid intakeSolenoid2 = new Solenoid(41, 2);
+  // public static final Solenoid intakeSolenoid = new Solenoid(41, 1);
+  // public static final Solenoid intakeSolenoid2 = new Solenoid(41, 2);
   public static final Solenoid angleSolenoid = new Solenoid(41, 3);
   public static final Solenoid angleSolenoidExhaust = new Solenoid(41, 0);
 
@@ -102,14 +102,19 @@ public final class Constants {
 
   // TODO: RUN CHARACTERIZATION AND CHANGE
 
-  public static final double ksVolts = 0.252;
-  public static final double kvVoltSecondsPerMeter = 2.24;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.266;
-  public static final double kPDriveVel = 0.0014;
+  
+  public static final double ksVolts = 0.79;
+  public static final double kvVoltSecondsPerMeter = 1.11;
+  //0.104
+  public static final double kaVoltSecondsSquaredPerMeter = 0.104;
+  //2.3
+  public static final double kPDriveVel = 0.023;
   public static final double kTrackwidthMeters = 0.8339247986341132;
   public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
-  public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(0.5);
-  public static final double kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(0.5);
+
+  //Good (for now)
+  public static final double kMaxSpeedMetersPerSecond = 3; //Units.feetToMeters(3);
+  public static final double kMaxAccelerationMetersPerSecondSquared = 3; //Units.feetToMeters(5);
   public static final double kRamseteB = 2;
   public static final double kRamseteZeta = 0.7;
 

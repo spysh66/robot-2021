@@ -37,7 +37,8 @@ public class Drive extends SubsystemBase {
     private double scaleSpeed;
     private double scaleRotate;
     private final double moveAccelerationLimit = 0.07;
-    private final double rotateAccelerationLimit = 0.08; // Velocity - Tune for different drivetrain, if it's too
+    //0.08
+    private final double rotateAccelerationLimit = 0.60; // Velocity - Tune for different drivetrain, if it's too
                                                          // low/sluggish
 
     // Encoder Scale Factor (Meter)/(Pulse)
@@ -133,11 +134,12 @@ public class Drive extends SubsystemBase {
         rotateSpeed = deadband(rotateSpeed);
 
         // Normal is 0.8 move, 0.75 rotate
-        scaleSpeed = moveSpeed < 0 ? -0.9 : 0.9;
+        scaleSpeed = moveSpeed < 0 ? -0.65 : 0.65;
         scaleRotate = rotateSpeed < 0 ? -0.65 : 0.65;
 
-        moveSpeed *= scaleSpeed * moveSpeed;
-        rotateSpeed *= scaleRotate * rotateSpeed;
+        //Makes the robot turn weirdly, more testing to impliment 
+        // moveSpeed *= scaleSpeed * moveSpeed;
+        // rotateSpeed *= scaleRotate * rotateSpeed;
 
         // Acceleration Curve, takes the difference of the input value and a limited
         // value
@@ -160,9 +162,11 @@ public class Drive extends SubsystemBase {
         double bRotate = rotateSpeed - limitRotate;
         if (bRotate > rotateAccelerationLimit) {
             limitRotate += rotateAccelerationLimit;
+            limitRotate = rotateSpeed;
 
         } else if (bRotate < -rotateAccelerationLimit) {
             limitRotate -= rotateAccelerationLimit;
+            limitRotate = rotateSpeed;
 
         } else if (bRotate <= rotateAccelerationLimit) {
 
@@ -184,25 +188,28 @@ public class Drive extends SubsystemBase {
     // Tank Drive, one Joystick controls the left, one controls the right.
     public void tankDrive(double leftSpeed, double rightSpeed) {
 
-        // Limits for speed, using quadratics and max/min
+        // // Limits for speed, using quadratics and max/min
         leftSpeed = deadband(leftSpeed);
         rightSpeed = deadband(rightSpeed);
 
         limitSpeed = leftSpeed < 0 ? -0.8 : 0.8;
         limitSpeed = rightSpeed < 0 ? -0.8 : 0.8;
 
-        leftSpeed *= limitSpeed * leftSpeed;
-        rightSpeed *= limitSpeed * rightSpeed;
+        // leftSpeed *= limitSpeed * leftSpeed;
+        // rightSpeed *= limitSpeed * rightSpeed;
 
-        // Tells the program to run the driveTank
-        // differentialDrive.tankDrive(leftSpeed, rightSpeed);
-        frontRight.set(ControlMode.PercentOutput, rightSpeed);
-        frontLeft.set(ControlMode.PercentOutput, leftSpeed);
+        // // Tells the program to run the driveTank
+        // // frontRight.set(ControlMode.PercentOutput, rightSpeed);
+        // // frontLeft.set(ControlMode.PercentOutput, leftSpeed);
+        // m_drive.tankDrive(leftSpeed, rightSpeed);
+
+        m_drive.tankDrive(-leftSpeed, -rightSpeed);
+
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         left.setVoltage(leftVolts);
-        right.setVoltage(-rightVolts);
+        right.setVoltage(rightVolts);
         m_drive.feed();
     }
 
