@@ -41,10 +41,7 @@ public final class Constants {
   public static final int POVL = 270;
 
   // === MOTORS === //
-  public static final int backLeftDriveMotor = 1;
-  public static final int backRightDriveMotor = 2;
-  public static final int frontLeftDriveMotor = 3;
-  public static final int frontRightDriveMotor = 4;
+
 
   public static final int shooterBottomChannel = 5;
   public static final int shooterTopChannel = 6;
@@ -56,6 +53,10 @@ public final class Constants {
   public static final int TeleoscopeChannel = 10;
   public static final int WinchChannel = 11;
   
+  public static final int backLeftDriveMotor = 1;
+  public static final int backRightDriveMotor = 2;
+  public static final int frontLeftDriveMotor = 3;
+  public static final int frontRightDriveMotor = 4;
 
   public static final WPI_TalonFX frontLeft = new WPI_TalonFX(frontLeftDriveMotor);
   public static final WPI_TalonFX backLeft = new WPI_TalonFX(backLeftDriveMotor);
@@ -96,25 +97,30 @@ public final class Constants {
   public static final int kEncoderCPR = 1024;
 
   public static final double WHEEL_DIAMETER = 0.0254 * 6;
+  public static final double gearRatio = 10.71;
+  public static final double wheelCircumferenceInches = 18.85;
   public static final double ENCODER_EDGES_PER_REV = 2048;
+  
 
   // === PROFILE === //
 
   // TODO: RUN CHARACTERIZATION AND CHANGE
 
   
-  public static final double ksVolts = 0.79;
-  public static final double kvVoltSecondsPerMeter = 1.11;
+  public static final double ksVolts = 0.682;
+  //1.11
+  public static final double kvVoltSecondsPerMeter = 2.23;
   //0.104
-  public static final double kaVoltSecondsSquaredPerMeter = 0.104;
+  public static final double kaVoltSecondsSquaredPerMeter = 0.249;
   //2.3
-  public static final double kPDriveVel = 0.023;
-  public static final double kTrackwidthMeters = 0.8339247986341132;
+  public static final double kPDriveVel = 2.3;
+  //0.6575104629481551
+  public static final double kTrackwidthMeters = 0.83;
   public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
 
   //Good (for now)
-  public static final double kMaxSpeedMetersPerSecond = 3; //Units.feetToMeters(3);
-  public static final double kMaxAccelerationMetersPerSecondSquared = 3; //Units.feetToMeters(5);
+  public static final double kMaxSpeedMetersPerSecond = 3;
+  public static final double kMaxAccelerationMetersPerSecondSquared = 3;
   public static final double kRamseteB = 2;
   public static final double kRamseteZeta = 0.7;
 

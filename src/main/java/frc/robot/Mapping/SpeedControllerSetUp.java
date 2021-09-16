@@ -45,10 +45,10 @@ public class SpeedControllerSetUp {
         teleoscope.setInverted(false);
         winch.setInverted(false);
 
-        frontLeft.setNeutralMode(NeutralMode.Coast);
-        frontRight.setNeutralMode(NeutralMode.Coast);
-        backLeft.setNeutralMode(NeutralMode.Coast);
-        backRight.setNeutralMode(NeutralMode.Coast);
+        frontLeft.setNeutralMode(NeutralMode.Brake);
+        frontRight.setNeutralMode(NeutralMode.Brake);
+        backLeft.setNeutralMode(NeutralMode.Brake);
+        backRight.setNeutralMode(NeutralMode.Brake);
 
         conveyor.setNeutralMode(NeutralMode.Brake);
         collector.setNeutralMode(NeutralMode.Brake);

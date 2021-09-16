@@ -133,9 +133,13 @@ public class RobotCommands{
     );
 
 
-  public final StartEndCommand shoot = new StartEndCommand(
-    () -> m_shooter.shoot(), () -> m_shooter.shooterStop()
-    );
+  // public final StartEndCommand shoot = new StartEndCommand(
+  //   () -> m_shooter.shoot(), () -> m_shooter.shooterStop()
+  //   );
+
+    public final InstantCommand shoot = new InstantCommand(
+      () -> m_shooter.shoot()
+      );
 
 
     // === Climber === //

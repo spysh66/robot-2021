@@ -5,12 +5,13 @@ import frc.robot.Drivetrain.Drive;
 
 public class AutonDrive extends CommandBase {
     public final Drive drive;
-    private final double goal, speed;
+    private final double goal, left, right;
 
-    public AutonDrive(final double goalDistance, final double driveSpeed, final Drive drive) {
+    public AutonDrive(final double goalDistance, final double leftSpeed, final double rightSpeed, final Drive drive) {
         this.drive = drive;
         this.goal = goalDistance;
-        this.speed = driveSpeed;
+        this.left = leftSpeed;
+        this.right = rightSpeed;
 
         addRequirements(drive);
     }
@@ -25,13 +26,14 @@ public class AutonDrive extends CommandBase {
 
         // System.out.println("Error");
         // System.out.println(error);
-        System.out.println(drive.getRightDistance());
+        
 
-        drive.arcadeDrive(speed, 0);
+        drive.tankDrive(left, right);
 
     }
 
     public boolean isFinished() {
+        System.out.println(drive.getRightDistance());
         return (Math.abs(drive.getAverageEncoderDistance()) >= goal);
     }
 

@@ -3,6 +3,7 @@ package frc.robot.Mapping;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Sendable;
+//Egg
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -77,6 +78,8 @@ public class RobotContainer {
       new frc.robot.Autonomous.Routes.FiveBallAligned(m_robotDrive));
   private final SequentialCommandGroup FiveBallAngled = new SequentialCommandGroup(
       new frc.robot.Autonomous.Routes.FiveBallAngled(m_robotDrive));
+      private final SequentialCommandGroup BarrelRace = new SequentialCommandGroup(
+        new frc.robot.Autonomous.Routes.BarrelRace(m_robotDrive));
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   SendableChooser<Integer> m_time = new SendableChooser<>();
@@ -109,6 +112,7 @@ public class RobotContainer {
     m_chooser.addOption("FiveBallAligned", FiveBallAligned);
     m_chooser.addOption("FiveBallAngled", FiveBallAngled);
     m_chooser.addOption("Eight", EightBall);
+    m_chooser.addOption("Barrel", BarrelRace);
     //m_chooser.addOption("In-Front", TestRoute);
     m_time.addOption("No Wait", 0);
     m_time.addOption("1 sec", 1);
@@ -151,6 +155,10 @@ public class RobotContainer {
 
   }
 
+  // public Command getAutonomousCommand() {
+  //   return m_chooser.getSelected();
+  // }
+
   public Command getAutonomousCommand() {
 
     // Create a voltage constraint to ensure we don't accelerate too fast
@@ -176,9 +184,9 @@ public class RobotContainer {
         // Start at the origin facing the +X direction
         new Pose2d(0, 0, new Rotation2d(0)),
         // Pass through these two interior waypoints, making an 's' curve path
-        
         List.of(
-            new Translation2d(1, 0)
+            new Translation2d(1, 1),
+            new Translation2d(2, -1)
         ),
         // End 3 meters straight ahead of where we started, facing forward
         new Pose2d(3, 0, new Rotation2d(0)),

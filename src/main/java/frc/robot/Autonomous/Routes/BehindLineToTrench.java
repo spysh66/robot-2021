@@ -21,11 +21,11 @@ public class BehindLineToTrench extends SequentialCommandGroup {
             new AutoShoot(3, 0.55, 0.5),
             new RobotCommands().deployCollector2,
             new RobotCommands().shooterNear,
-            new AutonDrive(4 * Constants.moveConstant, -0.8, drive),
-            new TurnToAngle2(75, 0.8, drive),
-            new AutonDrive(4 * Constants.moveConstant, 0.8, drive),
-            new TurnToAngle2(60, 0.8, drive),
-            new AutonDrive(2 * Constants.moveConstant, 0.8, drive),
+            // new AutonDrive(4 * Constants.moveConstant, -0.8, drive),
+            // new TurnToAngle2(75, 0.8, drive),
+            // new AutonDrive(4 * Constants.moveConstant, 0.8, drive),
+            // new TurnToAngle2(60, 0.8, drive),
+            // new AutonDrive(2 * Constants.moveConstant, 0.8, drive),
             new RobotCommands().retractCollector2
             
             

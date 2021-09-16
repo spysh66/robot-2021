@@ -8,38 +8,50 @@
 package frc.robot.Drivetrain;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Robot;
+import frc.robot.Mapping.Constants;
 
 import static frc.robot.Mapping.Constants.*;
 
 public class Drive extends SubsystemBase {
 
-    private static Drive mInstance;
+    private ShuffleboardTab tab = Shuffleboard.getTab("Drive");
+    private NetworkTableEntry maxSpeed =
+       tab.add("Max Speed", 1)
+          .getEntry();
 
-    // -------------------------------
-    // Encoder constants
-    // -------------------------------
+    
+    private double speed;
     private double limitSpeed = 0;
     private double limitRotate = 0;
     private double scaleSpeed;
     private double scaleRotate;
     private final double moveAccelerationLimit = 0.07;
-    //0.08
-    private final double rotateAccelerationLimit = 0.60; // Velocity - Tune for different drivetrain, if it's too
+    // 0.08
+    private final double rotateAccelerationLimit = 0.08; // Velocity - Tune for different drivetrain, if it's too
                                                          // low/sluggish
+
+                                                        
 
     // Encoder Scale Factor (Meter)/(Pulse)
     private final double encoderScale = (1 / ENCODER_EDGES_PER_REV) * WHEEL_DIAMETER * Math.PI;
@@ -62,6 +74,9 @@ public class Drive extends SubsystemBase {
     // -------------------------------
     // Encoder, Gyro, and Odometer
     // -------------------------------
+//TODO: TRY SETTING UP ENCODERS
+
+
 
     /**
      * Gets the average distance of the two encoders.
@@ -90,11 +105,19 @@ public class Drive extends SubsystemBase {
 
     public Drive() {
 
-        zeroHeading();
-        resetEncoders();
-        m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+        //zeroHeading();
+        //resetEncoders();
+        m_odometry = new DifferentialDriveOdometry(Robot.m_gyro.getRotation2d());
 
     }
+    public void periodic() {
+    
+      
+        
+        
+    
+      //  m_odometry.update(Robot.m_gyro.getRotation2d(), frontLeft.getSelectedSensorPosition() / Constants.ENCODER_EDGES_PER_REV * Constants.gearRatio * Units.inchesToMeters(Constants.wheelCircumferenceInches), frontRight.getSelectedSensorPosition() / Constants.ENCODER_EDGES_PER_REV * Constants.gearRatio * Units.inchesToMeters(Constants.wheelCircumferenceInches));
+      }
 
     /**
      * Returns the currently-estimated pose of the robot.
@@ -122,7 +145,7 @@ public class Drive extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+        m_odometry.resetPosition(pose, Robot.m_gyro.getRotation2d());
     }
 
     // Arcade Drive, one Joystick controls forwards/backwards, the other controls
@@ -131,11 +154,13 @@ public class Drive extends SubsystemBase {
 
         // Limits for speed, using quadratics and max/min
         moveSpeed = deadband(moveSpeed);
-        rotateSpeed = deadband(rotateSpeed);
+       // rotateSpeed = deadband(rotateSpeed);
+
+        double max = maxSpeed.getDouble(1.0);
 
         // Normal is 0.8 move, 0.75 rotate
-        scaleSpeed = moveSpeed < 0 ? -0.65 : 0.65;
-        scaleRotate = rotateSpeed < 0 ? -0.65 : 0.65;
+        scaleSpeed = moveSpeed < 0 ? -0.5 : 0.5;
+        scaleRotate = rotateSpeed < 0 ? -0.45 : 0.45;
 
         //Makes the robot turn weirdly, more testing to impliment 
         // moveSpeed *= scaleSpeed * moveSpeed;
@@ -190,10 +215,10 @@ public class Drive extends SubsystemBase {
 
         // // Limits for speed, using quadratics and max/min
         leftSpeed = deadband(leftSpeed);
-        rightSpeed = deadband(rightSpeed);
+        // rightSpeed = deadband(rightSpeed);
 
-        limitSpeed = leftSpeed < 0 ? -0.8 : 0.8;
-        limitSpeed = rightSpeed < 0 ? -0.8 : 0.8;
+        limitSpeed = leftSpeed < 0 ? -1 : 1;
+        limitSpeed = rightSpeed < 0 ? -1 : 1;
 
         // leftSpeed *= limitSpeed * leftSpeed;
         // rightSpeed *= limitSpeed * rightSpeed;
@@ -203,7 +228,7 @@ public class Drive extends SubsystemBase {
         // // frontLeft.set(ControlMode.PercentOutput, leftSpeed);
         // m_drive.tankDrive(leftSpeed, rightSpeed);
 
-        m_drive.tankDrive(-leftSpeed, -rightSpeed);
+        m_drive.tankDrive(leftSpeed, rightSpeed);
 
     }
 
@@ -220,7 +245,7 @@ public class Drive extends SubsystemBase {
      * @param maxOutput the maximum output to which the drive will be constrained
      */
     public void setMaxOutput(final double maxOutput) {
-        setMaxOutput(maxOutput);
+        m_drive.setMaxOutput(maxOutput);
     }
 
     /**
@@ -236,7 +261,7 @@ public class Drive extends SubsystemBase {
      * @return the robot's heading in degrees, from 180 to 180
      */
     public double getHeading() {
-        return Math.IEEEremainder(Robot.m_gyro.getAngle(), 360) * (kGyroReversed ? -1.0 : 1.0);
+        return Robot.m_gyro.getRotation2d().getDegrees();
     }
 
     /**
@@ -259,24 +284,6 @@ public class Drive extends SubsystemBase {
         } else {
             return input;
         }
-    }
-
-    @Override
-    public void periodic() {
-        // This method will be called once per scheduler run
-
-        // System.out.println(m_gyro.isRotating());
-        // System.out.println(Robot.m_gyro.getAngle());
-        // System.out.println(getHeading());
-        // System.out.println("Left");
-        // System.out.println(getLeftDistance());
-        // System.out.println("Right");
-        // System.out.println(getRightDistance());
-
-        // System.out.println("Sensor Vel:" + frontLeft.getSelectedSensorVelocity());
-        // System.out.println("Sensor Pos:" + frontLeft.getSelectedSensorPosition());
-        // System.out.println("Out %" + frontLeft.getMotorOutputPercent());
-        // System.out.println("Out Of Phase:" + faults.SensorOutOfPhase);
     }
 
 }

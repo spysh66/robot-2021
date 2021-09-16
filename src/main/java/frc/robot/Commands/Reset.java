@@ -13,7 +13,7 @@ public class Reset extends CommandBase {
     public void initialize() {
 
         System.out.println("Reset");
-        Robot.m_gyro.zeroYaw();
+       // Robot.m_gyro.zeroYaw();
         Drive.resetEncoders();
 
     }
